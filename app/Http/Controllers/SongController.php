@@ -80,7 +80,7 @@ class SongController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'album_id' => 'required|integer|exists:albums,id',
+            'album_id' => 'required|exists:albums,id',
             'track_number' => 'required|integer|min:1'
         ]);
 

@@ -61,6 +61,6 @@ class Song extends Model
 
     public function albums()
     {
-        return $this->belongsToMany(Album::class, 'album_song')->withPivot('track_number');
+        return $this->belongsToMany(Album::class, 'album_songs')->withPivot('track_number');
     }
 }

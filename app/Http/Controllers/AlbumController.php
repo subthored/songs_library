@@ -89,7 +89,7 @@ class AlbumController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'release_year' => 'required|integer',
-            'artist_id' => 'required|integer|exists:artists, id'
+            'artist_id' => 'required|exists:artists,id'
         ]);
 
         $album = Album::create($validated);
