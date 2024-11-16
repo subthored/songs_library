@@ -6,10 +6,29 @@ use App\Models\Song;
 use App\Models\Album;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Songs",
+ *     description="API Endpoints for managing songs"
+ * )
+ */
 class SongController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/songs",
+     *     tags={"Songs"},
+     *     summary="Retrieve all songs",
+     *     description="Returns a list of all songs",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of songs",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/Song")
+     *         )
+     *     )
+     * )
      */
     public function index()
     {
@@ -17,18 +36,56 @@ class SongController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/songs",
+     *     tags={"Songs"},
+     *     summary="Create a new song",
+     *     description="Creates a new song and returns the created song object",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title", "album_id", "track_number"},
+     *             @OA\Property(
+     *                 property="title",
+     *                 type="string",
+     *                 description="Name of the song",
+     *                 example="Imagine"
+     *             ),
+     *             @OA\Property(
+     *                 property="album_id",
+     *                 type="integer",
+     *                 description="Identifier of album this song belongs to",
+     *                 example=1
+     *             ),
+     *             @OA\Property(
+     *                 property="track_number",
+     *                 type="integer",
+     *                 description="Song index number in album",
+     *                 example=1
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Song successfully created",
+     *         @OA\JsonContent(ref="#/components/schemas/Song")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad request"
+     *     )
+     * )
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'album_id' => 'required|integer|exists:albums,id',
             'track_number' => 'required|integer|min:1'
         ]);
 
         $song = Song::create([
-            'name' => $validated['name'],
+            'title' => $validated['title'],
             'track_number' => $validated['track_number']
         ]);
         $album = Album::findOrFail($validated['album_id']);
@@ -38,7 +95,28 @@ class SongController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/songs/{id}",
+     *     tags={"Songs"},
+     *     summary="Retrieve a song by ID",
+     *     description="Fetches a song by their unique identifier",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the song to fetch",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Song object",
+     *         @OA\JsonContent(ref="#/components/schemas/Song")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Song not found"
+     *     )
+     * )
      */
     public function show($id)
     {
@@ -47,7 +125,52 @@ class SongController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/songs/{id}",
+     *     tags={"Songs"},
+     *     summary="Update a song",
+     *     description="Updates an existing song by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the song to update",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"title", "album_id", "track_number"},
+     *             @OA\Property(
+     *                 property="title",
+     *                 type="string",
+     *                 description="Name of the song",
+     *                 example="Believe"
+     *             ),
+     *             @OA\Property(
+     *                 property="album_id",
+     *                 type="integer",
+     *                 description="Identifier of album this song belongs to",
+     *                 example=2
+     *             ),
+     *             @OA\Property(
+     *                 property="track_number",
+     *                 type="integer",
+     *                 description="Song index number in album",
+     *                 example=1
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Song successfully updated",
+     *         @OA\JsonContent(ref="#/components/schemas/Song")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Song not found"
+     *     )
+     * )
      */
     public function update(Request $request, $id)
     {
@@ -62,7 +185,27 @@ class SongController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/songs/{id}",
+     *     tags={"Songs"},
+     *     summary="Delete a song",
+     *     description="Deletes a song by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID of the song to delete",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Song successfully deleted"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Song not found"
+     *     )
+     * )
      */
     public function destroy($id)
     {

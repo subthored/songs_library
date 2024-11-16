@@ -1,0 +1,754 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Music Catalog API",
+        "description": "API for managing artists, albums, and songs",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/albums": {
+            "get": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Retrieve all albums",
+                "description": "Returns a list of all albums",
+                "operationId": "735609843dcfb89ee4e12e340eddca25",
+                "responses": {
+                    "200": {
+                        "description": "List of albums",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Album"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Create a new albums",
+                "description": "Creates a new album and returns the created album object",
+                "operationId": "2252aa8fd63b7d2fa1203c1735943d46",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "release_year",
+                                    "artist_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Name of the Album",
+                                        "type": "string",
+                                        "example": "Best Ever"
+                                    },
+                                    "release_year": {
+                                        "description": "Year of album release",
+                                        "type": "integer",
+                                        "example": 1992
+                                    },
+                                    "artist_id": {
+                                        "description": "Identifier of artist that album belongs to",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Album successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/albums/{id}": {
+            "get": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Retrieve an album by ID",
+                "description": "Fetches an album by their unique identifier",
+                "operationId": "71e9c4179582355e89419e6f6994c418",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the album to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Album object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Album not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Update an album",
+                "description": "Updates an existing album by ID",
+                "operationId": "1300ec85cc590b1ae1468c9bf8db122d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the album to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "release_year",
+                                    "artist_id"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Name of the Album",
+                                        "type": "string",
+                                        "example": "Best Ever"
+                                    },
+                                    "release_year": {
+                                        "description": "Year of album release",
+                                        "type": "integer",
+                                        "example": 1992
+                                    },
+                                    "artist_id": {
+                                        "description": "Identifier of artist that album belongs to",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Album successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Album"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Album not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Albums"
+                ],
+                "summary": "Delete an album",
+                "description": "Deletes a album by ID",
+                "operationId": "cabfc7c152115607d310827d46a82d5a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the album to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Album successfully deleted"
+                    },
+                    "404": {
+                        "description": "Album not found"
+                    }
+                }
+            }
+        },
+        "/api/artists": {
+            "get": {
+                "tags": [
+                    "Artists"
+                ],
+                "summary": "Retrieve all artists",
+                "description": "Returns a list of all artists",
+                "operationId": "2c8aed1387cca1c65d98da7ee11ac926",
+                "responses": {
+                    "200": {
+                        "description": "List of artists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Artist"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Artists"
+                ],
+                "summary": "Create a new artist",
+                "description": "Creates a new artist and returns the created artist object",
+                "operationId": "83d2888bdc6fac66b9a7cc81c4c950fb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the artist",
+                                        "type": "string",
+                                        "example": "Pink Floyd"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Artist successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Artist"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/artists/{id}": {
+            "get": {
+                "tags": [
+                    "Artists"
+                ],
+                "summary": "Retrieve an artist by ID",
+                "description": "Fetches an artist by their unique identifier",
+                "operationId": "d0b68c06b8bc310fbe24c6d3ea80dac3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the artist to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Artist object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Artist"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Artists"
+                ],
+                "summary": "Update an artist",
+                "description": "Updates an existing artist by ID",
+                "operationId": "5a5632ea389f9a05336f8d035f5a44c0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the artist to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Updated name of the artist",
+                                        "type": "string",
+                                        "example": "Queen"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Artist successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Artist"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Artists"
+                ],
+                "summary": "Delete an artist",
+                "description": "Deletes an artist by ID",
+                "operationId": "4f6d8bd2c8b4b738af7589b72348ac20",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the artist to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Artist successfully deleted"
+                    },
+                    "404": {
+                        "description": "Artist not found"
+                    }
+                }
+            }
+        },
+        "/api/songs": {
+            "get": {
+                "tags": [
+                    "Songs"
+                ],
+                "summary": "Retrieve all songs",
+                "description": "Returns a list of all songs",
+                "operationId": "0388bb28c35eec49b8b492d169ce3575",
+                "responses": {
+                    "200": {
+                        "description": "List of songs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Song"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Songs"
+                ],
+                "summary": "Create a new song",
+                "description": "Creates a new song and returns the created song object",
+                "operationId": "2f1970b82d91cc715578d972189f19cb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "album_id",
+                                    "track_number"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Name of the song",
+                                        "type": "string",
+                                        "example": "Imagine"
+                                    },
+                                    "album_id": {
+                                        "description": "Identifier of album this song belongs to",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "track_number": {
+                                        "description": "Song index number in album",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Song successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/songs/{id}": {
+            "get": {
+                "tags": [
+                    "Songs"
+                ],
+                "summary": "Retrieve a song by ID",
+                "description": "Fetches a song by their unique identifier",
+                "operationId": "4325a96361d1d3820cc0580eaae9197c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the song to fetch",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Song object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Song not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Songs"
+                ],
+                "summary": "Update a song",
+                "description": "Updates an existing song by ID",
+                "operationId": "452de7f8f11a121cd11e9430565632c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the song to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "album_id",
+                                    "track_number"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Name of the song",
+                                        "type": "string",
+                                        "example": "Believe"
+                                    },
+                                    "album_id": {
+                                        "description": "Identifier of album this song belongs to",
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "track_number": {
+                                        "description": "Song index number in album",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Song successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Song"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Song not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Songs"
+                ],
+                "summary": "Delete a song",
+                "description": "Deletes a song by ID",
+                "operationId": "829c1a52ae5013ce3ff4b9829a31485f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the song to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Song successfully deleted"
+                    },
+                    "404": {
+                        "description": "Song not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Album": {
+                "title": "Album",
+                "description": "Schema for Album",
+                "required": [
+                    "id",
+                    "title",
+                    "release_year",
+                    "artist_id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier of the song",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "description": "Name of the Album",
+                        "type": "string",
+                        "example": "Best Ever"
+                    },
+                    "release_year": {
+                        "description": "Year of album release",
+                        "type": "integer",
+                        "example": 1992
+                    },
+                    "artist_id": {
+                        "description": "Identifier of artist that album belongs to",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "description": "Date when the album was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Date when the album was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Artist": {
+                "title": "Artist",
+                "description": "Schema for Artist",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the artist",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Name of the artist",
+                        "type": "string",
+                        "example": "The Beatles"
+                    },
+                    "created_at": {
+                        "description": "Date when the artist was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Date when the artist was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Song": {
+                "title": "Song",
+                "description": "Schema for Song",
+                "required": [
+                    "id",
+                    "name",
+                    "album_id",
+                    "track_number"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier of the song",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Name of the song",
+                        "type": "string",
+                        "example": "Imagine"
+                    },
+                    "album_id": {
+                        "description": "Identifier of album this song belongs to",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "track_number": {
+                        "description": "Song index number in album",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "description": "Date when the song was created",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "description": "Date when the song was last updated",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Albums",
+            "description": "API Endpoints for managing albums"
+        },
+        {
+            "name": "Artists",
+            "description": "API Endpoints for managing artists"
+        },
+        {
+            "name": "Songs",
+            "description": "API Endpoints for managing songs"
+        }
+    ]
+}
